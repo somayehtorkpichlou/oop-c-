@@ -1,0 +1,81 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+// کلاس پایه 
+class Car {
+public:
+    // متد استارت
+    virtual void start() {
+        std::cout << "Starting the car..." << std::endl;
+    }
+    
+    // متد عمومی دیگر در کلاس پایه
+    virtual void showInfo() {
+        std::cout << "This is a car." << std::endl;
+    }
+
+    // ویرایشگر مجازی برای پاک‌سازی حافظه
+    virtual ~Car() {}
+};
+
+// کلاس پراید
+class Pride : public Car {
+public:
+    void start() override {
+        Car::start(); // استارت از کلاس پایه
+        std::cout << "Pride is starting with clutch and brake." << std::endl;
+    }
+
+    void showInfo() override {
+        std::cout << "This is a Pride car." << std::endl;
+    }
+};
+
+// کلاس بنز
+class Benz : public Car {
+private:
+    std::vector<std::string> sensors;
+
+public:
+    Benz() {
+        // اضافه کردن حسگرهای خاص بنز
+        sensors.push_back("Parking Sensor");
+        sensors.push_back("Blind Spot Sensor");
+        sensors.push_back("Lane Assist Sensor");
+    }
+
+    void start() override {
+        Car::start(); // استارت از کلاس پایه
+        std::cout << "Benz is starting with additional features." << std::endl;
+        
+        std::cout << "Benz sensors: ";
+        for (const auto& sensor : sensors) {
+            std::cout << sensor << " ";
+        }
+        std::cout << std::endl;
+    }
+
+    void showInfo() override {
+        std::cout << "This is a Benz car." << std::endl;
+    }
+};
+
+int main() {
+    Car* myPride = new Pride();
+    Car* myBenz = new Benz();
+
+    myPride->start();
+    myPride->showInfo();
+
+    std::cout << std::endl;
+
+    myBenz->start();
+    myBenz->showInfo();
+
+    // آزادسازی حافظه
+    delete myPride;
+    delete myBenz;
+
+    return 0; 
+}
